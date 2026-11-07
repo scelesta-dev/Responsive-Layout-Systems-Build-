@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
+@layer reset, tokens, base, layout, components, utilities, states, overrides, print;
+
+/* RESET */
+/* This section removes default browser styling to create a consistent starting point across all platforms. 
+It standardizes margins, box sizing, form elements, and images to prevent spacing or layout issues.  */
+@layer reset {
+  *, *::before, *::after { box-sizing: border-box; }
+  body, h1, h2, h3, p, figure { margin: 0; }
+  img, video, svg { display: block; max-width: 100%; }
+  button, input, textarea, select { font: inherit; }
+}
+
+/* DESIGN VARIABLES */
+/* This section defines the reusable CSS properties for fonts, colors, spacing, borders, and transitions. 
+Centralizing these values ensures consistency across the website and makes future design changes easier to manage 
+and edit.  */
+@layer tokens {
+  :root {
+    --black: #17191d; --white: #fff; --grey: #f2f4f7;
+    --dark-grey: #566171; --blue: #3569b0; --dark-blue: #244c86;
+    --body-font: 'Montserrat', Arial, sans-serif;
+    --heading-font: 'Playfair Display', Georgia, serif;
+    --space-small: .5rem; --space-medium: 1rem;
+    --space-large: 2rem; --space-section: 4rem;
+    --border-radius: .75rem;
+  }
+}
+
+/* GENERAL STYLES */
+/* This establishes the website's typography and overall appearance, using Montserrat for body text and Playfair Display 
+for headings. This section also controls text sizing, line height, background colors, and responsive headings. */
+@layer base {
+  body { background: var(--white); color: var(--black); font: 400 1rem/1.7 var(--body-font); }
+  h1, h2, h3 { font-family: var(--heading-font); line-height: 1.2; }
+  h1 { font-size: clamp(2rem, 4vw, 3.5rem); }
+  h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
+  h3 { font-size: 1.3rem; }
+  p { max-width: 70ch; }
+  a { color: var(--dark-blue); }
+}
+
+/* PAGE LAYOUTS */
+/* This area controls the website's overall structure using the grid, flexbox, columns, and content sections. */
+@layer layout {
+  .page-container { width: min(100% - 2rem, 72rem); margin-inline: auto; }
+  .content-section { padding-block: var(--space-large); }
+  .vertical-layout { display: flex; flex-direction: column; gap: var(--space-medium); }
+  .two-column-layout, .content-grid { display: grid; gap: var(--space-large); }
+  .article-content { max-width: 70ch; margin-inline: auto; }
+  .article-content > * + * { margin-top: var(--space-medium); }
+  @media (min-width: 768px) {
+    .content-section { padding-block: var(--space-section); }
+    .content-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 1024px) {
+    .two-column-layout { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; }
+    }
+}
+
+/* REUSABLE COMPONENTS */
+/* This section contains reusable styling for navigation, buttons, cards, images, forms, tables, and footers. 
+Every component uses specific class names and shared design variables to maintain consistency. */
+@layer components {
+  .site-header { border-bottom: 1px solid #d6dce4; background: var(--white); }
+  .site-header-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-medium); min-height: 4.5rem; }
+  .site-logo { font: 700 1.25rem var(--heading-font); color: var(--black); text-decoration: none; }
+  .navigation-toggle { padding: .5rem .75rem; border: 1px solid var(--dark-grey); border-radius: var(--border-radius); background: var(--white); cursor: pointer; }
+  .main-navigation { display: none; width: 100%; }
+  .site-header.menu-is-open .main-navigation { display: block; }
+  .navigation-links { display: flex; flex-direction: column; gap: var(--space-small); padding: 0 0 var(--space-medium); margin: 0; list-style: none; }
+  .navigation-link { display: inline-block; padding: .5rem; color: var(--black); text-decoration: none; }
+  .hero-section { padding-block: var(--space-section); }
+  .hero-content { display: grid; gap: var(--space-medium); }
+  .page-introduction { text-align: center; padding-block: var(--space-large); }
+  .page-introduction p { margin-inline: auto; }
+  .content-image { width: 100%; height: auto; border-radius: var(--border-radius); background: var(--grey); }
+  .content-card { --card-padding: var(--space-medium); display: flex; flex-direction: column; gap: var(--space-medium); padding: var(--card-padding); border: 1px solid #d6dce4; border-radius: var(--border-radius); background: var(--white); }
+  .content-card-compact { --card-padding: var(--space-small); }
+  .button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; width: fit-content; max-width: 100%; padding: .65rem 1.25rem; border: 1px solid var(--blue); border-radius: 999px; background: var(--white); color: var(--dark-blue); font-weight: 600; text-align: center; text-decoration: none; cursor: pointer; transition: background-color .2s ease, color .2s ease; }
+  .information-callout { padding: var(--space-medium); border-left: 4px solid var(--blue); background: var(--grey); }
+  .form-field { display: grid; gap: var(--space-small); }
+  .form-field-label { font-weight: 600; }
+  .form-field-input { width: 100%; min-height: 44px; padding: .7rem; border: 1px solid var(--dark-grey); border-radius: var(--border-radius); }
+  .site-footer { padding-block: var(--space-large); border-top: 1px solid #d6dce4; background: var(--grey); }
+  .footer-links, .resource-list { display: flex; flex-wrap: wrap; gap: var(--space-medium); padding: 0; margin: 0; list-style: none; }
+  .footer-links { flex-direction: column; }
+  @media (min-width: 768px) {
+    .navigation-toggle { display: none; }
+    .main-navigation { display: block; width: auto; }
+    .navigation-links { flex-direction: row; padding: 0; }
+    .footer-links { flex-direction: row; justify-content: space-between; }
+  }
+}
+
+/* HELPER CLASSES */
+/* This area provides small, reusable classes to adjust text alignment, spacing, and secondary colors. */
+@layer utilities {
+  .text-center { text-align: center; }
+  .muted-text { color: var(--dark-grey); }
+  .top-spacing { margin-top: var(--space-large); }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+}
+
+/* INTERACTIVE STATES */
+/* This section defines how elements respond to user interactions, including hover effects, keyboard focus, active states, 
+and navigation highlighting. */
+@layer states {
+  :where(a, button, input, textarea, select):focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+  .button:hover { background: var(--blue); color: var(--white); }
+  .button:active { background: var(--dark-blue); color: var(--white); }
+  .navigation-link:hover { color: var(--blue); }
+  .navigation-link[aria-current="page"] { color: var(--dark-blue); font-weight: 700; text-decoration: underline; }
+  .form-field-input[aria-invalid="true"] { border-color: #a32929; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  }
+}
+
+/* PAGE-SPECIFIC OVERRIDES */
+/* Reserved for future page-specific adjustments; none needed yet. */
+@layer overrides {}
+
+/* PRINT STYLES */
+/* Here are styling adjustments that apply only to specific pages. Keeping these separate prevents changes to shared 
+components. */
+@layer print {
+  @media print {
+    @page { margin: 16mm; }
+    body { background: white; color: black; font: 11pt/1.5 Georgia, serif; }
+    .site-header, .site-footer, .navigation-toggle, .button, .no-print { display: none !important; }
+    .page-container, .article-content { width: 100%; max-width: none; }
+    .content-section, .hero-section { padding-block: 0; }
+    .two-column-layout, .content-grid { display: block; }
+    h1, h2, h3 { break-after: avoid; }
+    img, .content-card, .information-callout { break-inside: avoid; }
+    .article-content a[href^="http"]::after { content: ' (' attr(href) ')'; overflow-wrap: anywhere; }
+  }
+}
